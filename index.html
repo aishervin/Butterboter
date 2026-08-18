@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☬ SHΞN™ — Bot Studio Wizard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: #07080a;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(217, 119, 6, 0.05) 0px, transparent 50%);
+    }
+    .code-font { font-family: 'JetBrains Mono', monospace; }
+    .glass-card {
+      background: rgba(14, 16, 21, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(245, 158, 11, 0.15);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+    }
+    .glass-input {
+      background: rgba(8, 9, 12, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.2s ease;
+    }
+    .glass-input:focus {
+      border-color: rgba(245, 158, 11, 0.5);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+      outline: none;
+    }
+    .custom-scroll::-webkit-scrollbar { width: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.25); border-radius: 3px; }
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9));
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover { box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 flex flex-col justify-between p-4 md:p-8 selection:bg-amber-500/30 selection:text-amber-200">
+  <header class="max-w-4xl mx-auto w-full flex items-center justify-between py-4 border-b border-amber-500/10 mb-6">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xl shadow-[0_0_15px_rgba(245,158,11,0.2)]">☬</div>
+      <div>
+        <h1 class="font-bold text-lg text-slate-100 tracking-wide">☬Exclusive SHΞN™ made <span class="text-amber-400 text-sm font-normal">Butter Boter</span></h1>
+        <p class="text-xs text-slate-500">  GitHub to Cloudflare on Telegram</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="clearFormCache()" title="پاکسازی داده‌های فرم" class="text-xs text-slate-400 hover:text-rose-400 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800 transition">🗑️ پاکسازی کش فرم</button>
+    </div>
+  </header>
+  <main class="max-w-4xl mx-auto w-full flex-grow">
+    <div class="glass-card rounded-2xl p-6 md:p-8">
+      <div class="grid grid-cols-4 gap-2 mb-8 text-center text-xs font-semibold">
+        <div id="step-tab-1" class="py-2.5 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-400 transition-all">۱. پلتفرم‌ها</div>
+        <div id="step-tab-2" class="py-2.5 rounded-lg border border-slate-800 bg-slate-900/40 text-slate-500 transition-all">۲. تلگرام و AI</div>
+        <div id="step-tab-3" class="py-2.5 rounded-lg border border-slate-800 bg-slate-900/40 text-slate-500 transition-all">۳. تنظیمات مخزن</div>
+        <div id="step-tab-4" class="py-2.5 rounded-lg border border-slate-800 bg-slate-900/40 text-slate-500 transition-all">۴. استقرار زنده</div>
+      </div>
+      <form id="wizard-form" onsubmit="event.preventDefault();">
+        <div id="step-1" class="space-y-5">
+          <div class="border-b border-slate-800/80 pb-3 mb-4">
+            <h2 class="text-base font-bold text-slate-100 flex items-center gap-2"><span class="text-amber-400">🔑</span> اتصال زیرساخت و احراز هویت</h2>
+            <p class="text-xs text-slate-400 mt-1">اطلاعات شما فقط در حافظه موقت مرورگر ذخیره می‌شود.</p>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">توکن گیت‌هاب (Personal Access Token با اسکوپ repo)</label>
+            <input type="password" id="github_token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">توکن کلودفلر (API Token)</label>
+              <input type="password" id="cf_token" placeholder="Cloudflare API Token" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
+              <p class="text-[10px] text-slate-500 mt-1">دسترسی‌های لازم: Workers Scripts:Edit، Workers KV Storage:Edit</p>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">شناسه اکانت کلودفلر (Account ID)</label>
+              <input type="text" id="cf_account_id" placeholder="کد ۳۲ رقمی از سایدبار ورکرها" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
+            </div>
+          </div>
+        </div>
+        <div id="step-2" class="space-y-5 hidden">
+          <div class="border-b border-slate-800/80 pb-3 mb-4">
+            <h2 class="text-base font-bold text-slate-100 flex items-center gap-2"><span class="text-amber-400">🤖</span> اتصال ربات و هوش مصنوعی</h2>
+            <p class="text-xs text-slate-400 mt-1">مشخصات ربات تلگرام و کلید مدل جمنای</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">توکن ربات تلگرام (از @BotFather)</label>
+              <input type="password" id="tg_token" placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">یوزرنیم مالک ربات (بدون @)</label>
+              <input type="text" id="owner_username" placeholder="shervini" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">کلید جمنای (Google AI Studio Key)</label>
+              <input type="password" id="gemini_key" placeholder="AQ.a1b2c3d..." class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">کلید Serper برای سرچ وب <span class="text-slate-500 font-normal">(اختیاری)</span></label>
+              <input type="password" id="serper_key" placeholder="اختیاری - برای سرچ گوگل" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
+            </div>
+          </div>
+        </div>
+        <div id="step-3" class="space-y-5 hidden">
+          <div class="border-b border-slate-800/80 pb-3 mb-4">
+            <h2 class="text-base font-bold text-slate-100 flex items-center gap-2"><span class="text-amber-400">✨</span> تنظیمات سورس و پرامپت</h2>
+            <p class="text-xs text-slate-400 mt-1">نامگذاری مخزن و مشخص کردن شخصیت پردازشگر</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">نام ریپازیتوری گیت‌هاب و ورکر</label>
+              <input type="text" id="repo_name" value="my-ai-telegram-bot" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">نام نمایشی ربات</label>
+              <input type="text" id="bot_display_name" value="SHΞN™" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">پرامپت سیستم و شخصیت ربات (System Prompt)</label>
+            <textarea id="system_prompt" rows="4" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 leading-relaxed custom-scroll">You are an elite research & conversational AI agent running on Cloudflare Edge.
+- Tone: Street-smart, witty, sharp, helpful, and direct.
+- You analyze deep layers of messages and answer precisely.
+- Always be respectful to the owner and provide clear, fast insights.</textarea>
+          </div>
+        </div>
+        <div id="step-4" class="space-y-4 hidden">
+          <div class="border-b border-slate-800/80 pb-3 mb-2 flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-bold text-slate-100 flex items-center gap-2"><span class="text-amber-400">⚡</span> پایپ‌لاین ساخت و استقرار</h2>
+              <p class="text-xs text-slate-400 mt-1">ساخت ریپازیتوری، کامیت فایل‌ها و دیپلوی خودکار روی Cloudflare</p>
+            </div>
+            <div id="deploy-status" class="text-xs px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">آماده شروع</div>
+          </div>
+          <div id="console-logs" class="bg-[#050608] border border-slate-800/80 rounded-xl p-4 h-64 overflow-y-auto custom-scroll space-y-1">
+            <div class="text-xs text-slate-600">— کنسول آماده است —</div>
+          </div>
+          <div id="deploy-result" class="hidden space-y-3">
+            <div id="result-links" class="flex flex-wrap gap-3 text-xs"></div>
+          </div>
+          <div class="flex justify-between items-center pt-2">
+            <button onclick="prevStep()" class="text-xs text-slate-400 hover:text-amber-400 transition">→ مرحله قبل</button>
+            <button id="deploy-btn" onclick="startDeployment()" class="btn-primary px-8 py-3 rounded-xl text-sm font-bold text-slate-900">🚀 شروع استقرار</button>
+          </div>
+        </div>
+        <div id="nav-buttons" class="flex justify-between items-center pt-6 mt-6 border-t border-slate-800/50">
+          <button onclick="prevStep()" id="prev-btn" class="text-xs text-slate-400 hover:text-amber-400 transition opacity-0 pointer-events-none">→ مرحله قبل</button>
+          <button onclick="nextStep()" id="next-btn" class="btn-primary px-8 py-2.5 rounded-xl text-sm font-bold text-slate-900">مرحله بعد ←</button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <footer class="max-w-4xl mx-auto w-full text-center py-6 text-xs text-slate-600">SHΞN™ Bot Studio — پایپ‌لاین خودکار استقرار ربات روی Cloudflare Workers</footer>
+  <script type="text/plain" id="template-bot">
+const CONFIG = __BOT_CONFIG__;
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (request.method === 'GET' && url.pathname === '/') {
+      return new Response(CONFIG.botDisplayName + ' is running!', { status: 200, headers: { 'Content-Type': 'text/plain' } });
+    }
+    if (request.method === 'POST') {
+      try {
+        const update = await request.json();
+        if (update.message) { await handleMessage(update.message, env); }
+        else if (update.callback_query) { await handleCallback(update.callback_query, env); }
+      } catch (e) { console.error('Error processing update:', e); }
+      return new Response('OK', { status: 200 });
+    }
+    return new Response('Not found', { status: 404 });
+  }
+};
+
+async function tgApi(method, payload) {
+  const url = 'https://api.telegram.org/bot' + CONFIG.botToken + '/' + method;
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  return res.json();
+}
+
+async function sendMessage(chatId, text, replyToId) {
+  return tgApi('sendMessage', { chat_id: chatId, text: text, reply_to_message_id: replyToId || null, parse_mode: 'HTML' });
+}
+
+async function sendTyping(chatId) {
+  return tgApi('sendChatAction', { chat_id: chatId, action: 'typing' });
+}
+
+async function getChatHistory(chatId, env) {
+  const data = await env.SHEN_KV.get('chat:' + chatId);
+  return data ? JSON.parse(data) : [];
+}
+
+async function saveChatHistory(chatId, history, env) {
+  const trimmed = history.slice(-30);
+  await env.SHEN_KV.put('chat:' + chatId, JSON.stringify(trimmed));
+}
+
+async function callGemini(history, systemPrompt, apiKey) {
+  const model = CONFIG.geminiModel || 'gemini-2.0-flash';
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
+  const contents = history.map(function(m) { return { role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }; });
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: contents, systemInstruction: { parts: [{ text: systemPrompt }] }, generationConfig: { temperature: 0.9, maxOutputTokens: 4096, topP: 0.95 } }) });
+  const data = await res.json();
+  if (data.error) { throw new Error(data.error.message || 'Gemini API error'); }
+  const text = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0].text;
+  return text || 'متاسفانه نتوانستم پاسخی تولید کنم.';
+}
+
+async function searchWeb(query) {
+  if (!CONFIG.serperKey) return '';
+  try {
+    const res = await fetch('https://google.serper.dev/search', { method: 'POST', headers: { 'X-API-KEY': CONFIG.serperKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ q: query, num: 5 }) });
+    const data = await res.json();
+    if (!data.organic) return '';
+    return data.organic.map(function(r) { return '📌 ' + r.title + '\n' + r.snippet + '\n🔗 ' + r.link; }).join('\n\n');
+  } catch (e) { console.error('Search error:', e); return ''; }
+}
+
+async function handleMessage(message, env) {
+  const chatId = message.chat.id;
+  const text = message.text || '';
+  const username = (message.from && message.from.username) || '';
+  const isOwner = username === CONFIG.ownerUsername;
+  if (text === '/start' || text === '/help') {
+    const helpText = '👋 سلام! من ' + CONFIG.botDisplayName + ' هستم.\n\n📝 پیام بده تا جوابت رو بدم.\n🔍 /search <متن> — جستجوی وب\n🗑 /clear — پاکسازی حافظه گفتگو';
+    await sendMessage(chatId, helpText, message.message_id);
+    return;
+  }
+  if (text === '/clear') {
+    await env.SHEN_KV.delete('chat:' + chatId);
+    await sendMessage(chatId, '✅ حافظه گفتگو پاک شد.', message.message_id);
+    return;
+  }
+  let userText = text;
+  let searchContext = '';
+  if (text.startsWith('/search ')) {
+    userText = text.substring(8).trim();
+    await sendTyping(chatId);
+    searchContext = await searchWeb(userText);
+    if (searchContext) {
+      userText = 'نتایج جستجوی وب:\n' + searchContext + '\n\nبر اساس این نتایج به سوال زیر پاسخ بده: ' + userText;
+    } else {
+      await sendMessage(chatId, '⚠️ جستجو نتیجه‌ای نداشت یا کلید Serper تنظیم نشده.', message.message_id);
+      return;
+    }
+  }
+  await sendTyping(chatId);
+  let history = await getChatHistory(chatId, env);
+  history.push({ role: 'user', content: userText });
+  try {
+    const response = await callGemini(history, CONFIG.systemPrompt, CONFIG.geminiKey);
+    history.push({ role: 'assistant', content: response });
+    await saveChatHistory(chatId, history, env);
+    await sendMessage(chatId, response, message.message_id);
+  } catch (e) {
+    console.error('Gemini error:', e);
+    await sendMessage(chatId, '❌ خطا در پردازش: ' + e.message, message.message_id);
+  }
+}
+
+async function handleCallback(callback, env) {
+  const chatId = callback.message.chat.id;
+  const data = callback.data;
+  await tgApi('answerCallbackQuery', { callback_query_id: callback.id });
+  if (data === 'clear') {
+    await env.SHEN_KV.delete('chat:' + chatId);
+    await sendMessage(chatId, '✅ حافظه پاک شد.');
+  }
+}
+  </script>
+  <script type="text/plain" id="template-wrangler">
+name = "__REPO_NAME__"
+main = "src/index.js"
+compatibility_date = "2026-07-16"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "SHEN_KV"
+id = "__KV_NAMESPACE_ID__"
+  </script>
+  <script type="text/plain" id="template-package">
+{
+  "name": "__REPO_NAME__",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.99.0"
+  }
+}
+  </script>
+  <script type="text/plain" id="template-deploy">
+name: Deploy Bot
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler@latest
+
+      - name: Create or Get KV Namespace
+        id: kv
+        env:
+          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CF_ACCOUNT_ID }}
+        run: |
+          echo "Creating KV namespace SHEN_KV..."
+          RESPONSE=$(curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/storage/kv/namespaces" \
+            -H "Authorization: Bearer ${CF_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{"title":"SHEN_KV"}')
+
+          KV_ID=$(echo "$RESPONSE" | jq -r '.result.id // empty')
+
+          if [ -z "$KV_ID" ]; then
+            echo "Namespace may already exist, listing..."
+            LIST=$(curl -s \
+              "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/storage/kv/namespaces" \
+              -H "Authorization: Bearer ${CF_TOKEN}")
+            KV_ID=$(echo "$LIST" | jq -r '.result[] | select(.title=="SHEN_KV") | .id' | head -1)
+          fi
+
+          if [ -z "$KV_ID" ]; then
+            echo "::error::Failed to create or find KV namespace"
+            echo "Response: $RESPONSE"
+            exit 1
+          fi
+
+          echo "kv_id=$KV_ID" >> $GITHUB_OUTPUT
+          echo "KV Namespace ID: $KV_ID"
+
+      - name: Update wrangler.toml with KV ID
+        run: |
+          sed -i "s/__KV_NAMESPACE_ID__/${{ steps.kv.outputs.kv_id }}/g" wrangler.toml
+          echo "=== Updated wrangler.toml ==="
+          cat wrangler.toml
+
+      - name: Deploy Worker
+        id: deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        run: |
+          wrangler deploy 2>&1 | tee deploy.log
+          WORKER_URL=$(grep -oP 'https://[a-z0-9.-]+\.workers\.dev' deploy.log | head -1)
+          echo "worker_url=$WORKER_URL" >> $GITHUB_OUTPUT
+          echo "Worker deployed at: $WORKER_URL"
+
+      - name: Set Telegram Webhook
+        env:
+          TG_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+        run: |
+          sleep 3
+          WEBHOOK_URL="${{ steps.deploy.outputs.worker_url }}"
+          echo "Setting Telegram webhook to: ${WEBHOOK_URL}"
+          curl -s "https://api.telegram.org/bot${TG_TOKEN}/setWebhook?url=${WEBHOOK_URL}&max_connections=40&allowed_updates=[\"message\",\"callback_query\"]"
+  </script>
+  <script>
+    let currentStep = 1;
+    let isDeploying = false;
+    const CACHE_KEY = 'shen_wizard_cache';
+
+    function goToStep(n) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('step-' + i).classList.toggle('hidden', i !== n);
+        const tab = document.getElementById('step-tab-' + i);
+        if (i === n) { tab.className = 'py-2.5 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-400 transition-all'; }
+        else if (i < n) { tab.className = 'py-2.5 rounded-lg border border-emerald-500/30 bg-emerald-500/5 text-emerald-400/70 transition-all'; }
+        else { tab.className = 'py-2.5 rounded-lg border border-slate-800 bg-slate-900/40 text-slate-500 transition-all'; }
+      }
+      currentStep = n;
+      const navButtons = document.getElementById('nav-buttons');
+      const deployBtn = document.getElementById('deploy-btn');
+      if (n === 4) { navButtons.classList.add('hidden'); deployBtn.classList.remove('hidden'); }
+      else { navButtons.classList.remove('hidden'); deployBtn.classList.add('hidden'); }
+      const prevBtn = document.getElementById('prev-btn');
+      if (n === 1) { prevBtn.classList.add('opacity-0', 'pointer-events-none'); }
+      else { prevBtn.classList.remove('opacity-0', 'pointer-events-none'); }
+      const nextBtn = document.getElementById('next-btn');
+      if (n === 3) { nextBtn.innerHTML = 'شروع استقرار 🚀'; } else { nextBtn.innerHTML = 'مرحله بعد ←'; }
+      saveFormCache();
+    }
+
+    function nextStep() {
+      if (currentStep < 4) {
+        if (currentStep === 3) { startDeployment(); }
+        else { goToStep(currentStep + 1); }
+      }
+    }
+
+    function prevStep() { if (currentStep > 1) goToStep(currentStep - 1); }
+
+    function saveFormCache() {
+      const data = {};
+      document.querySelectorAll('input, textarea').forEach(el => { if (el.id) data[el.id] = el.value; });
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch(e) {}
+    }
+
+    function loadFormCache() {
+      try {
+        const data = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+        Object.keys(data).forEach(id => { const el = document.getElementById(id); if (el) el.value = data[id]; });
+      } catch(e) {}
+    }
+
+    function clearFormCache() {
+      localStorage.removeItem(CACHE_KEY);
+      document.querySelectorAll('input, textarea').forEach(el => { if (el.id && el.id !== 'repo_name' && el.id !== 'bot_display_name' && el.id !== 'system_prompt') { el.value = ''; } });
+      log('کش فرم پاک شد', 'warn');
+    }
+
+    document.addEventListener('input', saveFormCache);
+
+    function log(msg, type) {
+      const consoleEl = document.getElementById('console-logs');
+      const time = new Date().toLocaleTimeString('fa-IR');
+      const colors = { error: 'text-rose-400', success: 'text-emerald-400', warn: 'text-amber-400', info: 'text-sky-400' };
+      const color = colors[type] || 'text-slate-300';
+      const div = document.createElement('div');
+      div.className = 'text-xs ' + color + ' leading-relaxed';
+      div.innerHTML = '<span class="text-slate-600">[' + time + ']</span> ' + msg;
+      consoleEl.appendChild(div);
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    function setStatus(text, type) {
+      const el = document.getElementById('deploy-status');
+      el.textContent = text;
+      const styles = { idle: 'bg-amber-500/10 text-amber-400 border-amber-500/20', running: 'bg-sky-500/10 text-sky-400 border-sky-500/20', success: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', error: 'bg-rose-500/10 text-rose-400 border-rose-500/20' };
+      el.className = 'text-xs px-3 py-1 rounded-full border ' + (styles[type] || styles.idle);
+    }
+
+    function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    function toBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let binary = '';
+      for (const byte of bytes) { binary += String.fromCharCode(byte); }
+      return btoa(binary);
+    }
+
+    function gatherConfig() {
+      return {
+        githubToken: document.getElementById('github_token').value.trim(),
+        cfToken: document.getElementById('cf_token').value.trim(),
+        cfAccountId: document.getElementById('cf_account_id').value.trim(),
+        tgToken: document.getElementById('tg_token').value.trim(),
+        ownerUsername: document.getElementById('owner_username').value.trim(),
+        geminiKey: document.getElementById('gemini_key').value.trim(),
+        serperKey: document.getElementById('serper_key').value.trim(),
+        repoName: document.getElementById('repo_name').value.trim(),
+        botDisplayName: document.getElementById('bot_display_name').value.trim(),
+        systemPrompt: document.getElementById('system_prompt').value.trim()
+      };
+    }
+
+    function validateConfig(config) {
+      const required = { githubToken: 'توکن گیت‌هاب', cfToken: 'توکن کلودفلر', cfAccountId: 'شناسه اکانت کلودفلر', tgToken: 'توکن تلگرام', ownerUsername: 'یوزرنیم مالک', geminiKey: 'کلید جمنای', repoName: 'نام ریپازیتوری', botDisplayName: 'نام نمایشی ربات', systemPrompt: 'پرامپت سیستم' };
+      for (const [field, label] of Object.entries(required)) {
+        if (!config[field]) { log('❌ فیلد الزامی خالی است: ' + label, 'error'); return false; }
+      }
+      return true;
+    }
+
+    async function ghApi(token, method, path, body) {
+      const options = { method: method, headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' } };
+      if (body) { options.headers['Content-Type'] = 'application/json'; options.body = JSON.stringify(body); }
+      const res = await fetch('https://api.github.com' + path, options);
+      const data = await res.json();
+      if (!res.ok) {
+        const err = new Error(data.message || ('GitHub API error: ' + res.status));
+        err.status = res.status; err.data = data; throw err;
+      }
+      return data;
+    }
+
+    async function getGitHubUser(token) { return ghApi(token, 'GET', '/user'); }
+
+    async function createRepo(token, name) {
+      try {
+        return await ghApi(token, 'POST', '/user/repos', { name: name, private: true, auto_init: true, description: 'AI Telegram Bot on Cloudflare Workers — deployed by SHΞN Bot Studio' });
+      } catch (e) {
+        if (e.status === 422 || (e.message && e.message.includes('already exists'))) {
+          log('⚠️ ریپازیتوری از قبل وجود دارد — از همان استفاده می‌شود', 'warn');
+          return null;
+        }
+        throw e;
+      }
+    }
+
+    const SODIUM_VERSION = '0.7.15';
+    const SODIUM_CDN_BASES = [
+      'https://cdn.jsdelivr.net/npm',
+      'https://fastly.jsdelivr.net/npm',
+      'https://gcore.jsdelivr.net/npm',
+      'https://unpkg.com'
+    ];
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = () => { script.remove(); reject(new Error('load failed: ' + src)); };
+        document.head.appendChild(script);
+      });
+    }
+
+    async function loadSodium() {
+      if (window.sodium) { await window.sodium.ready; return window.sodium; }
+      for (const base of SODIUM_CDN_BASES) {
+        try {
+          delete window.sodium;
+          delete window.libsodium;
+          await loadScript(base + '/libsodium-sumo@' + SODIUM_VERSION + '/dist/modules-sumo/libsodium-sumo.js');
+          await loadScript(base + '/libsodium-wrappers-sumo@' + SODIUM_VERSION + '/dist/modules-sumo/libsodium-wrappers.js');
+          await window.sodium.ready;
+          return window.sodium;
+        } catch (e) {
+          log('⚠️ بارگذاری libsodium از ' + base + ' ناموفق — تلاش با CDN بعدی...', 'warn');
+        }
+      }
+      throw new Error('libsodium بارگذاری نشد');
+    }
+
+    async function encryptSecret(publicKeyBase64, secretValue) {
+      const sodium = await loadSodium();
+      const publicKey = sodium.from_base64(publicKeyBase64, sodium.base64_variants.ORIGINAL);
+      const message = sodium.from_string(secretValue);
+      const encrypted = sodium.crypto_box_seal(message, publicKey);
+      return sodium.to_base64(encrypted, sodium.base64_variants.ORIGINAL);
+    }
+
+    async function setGitHubSecrets(config, owner) {
+      log('🔐 دریافت کلید عمومی ریپازیتوری...');
+      const publicKey = await ghApi(config.githubToken, 'GET', '/repos/' + owner + '/' + config.repoName + '/actions/secrets/public-key');
+      const secrets = { 'CF_API_TOKEN': config.cfToken, 'CF_ACCOUNT_ID': config.cfAccountId, 'TG_BOT_TOKEN': config.tgToken };
+      for (const [name, value] of Object.entries(secrets)) {
+        log('  🔒 تنظیم سکرت: ' + name);
+        const encrypted = await encryptSecret(publicKey.key, value);
+        await ghApi(config.githubToken, 'PUT', '/repos/' + owner + '/' + config.repoName + '/actions/secrets/' + name, { encrypted_value: encrypted, key_id: publicKey.key_id });
+        log('  ✅ ' + name + ' ثبت شد', 'success');
+      }
+    }
+
+    async function commitAllFiles(token, owner, repo, files) {
+      log('  📌 دریافت شاخه پیش‌فرض...');
+      const repoInfo = await ghApi(token, 'GET', '/repos/' + owner + '/' + repo);
+      const branch = repoInfo.default_branch;
+      const ref = await ghApi(token, 'GET', '/repos/' + owner + '/' + repo + '/git/refs/heads/' + branch);
+      const commitSha = ref.object.sha;
+      const commitInfo = await ghApi(token, 'GET', '/repos/' + owner + '/' + repo + '/git/commits/' + commitSha);
+      const treeSha = commitInfo.tree.sha;
+      log('  📦 ساخت blob برای فایل‌ها...');
+      const treeItems = [];
+      for (const file of files) {
+        const blob = await ghApi(token, 'POST', '/repos/' + owner + '/' + repo + '/git/blobs', { content: toBase64(file.content), encoding: 'base64' });
+        treeItems.push({ path: file.path, mode: '100644', type: 'blob', sha: blob.sha });
+        log('    ✅ ' + file.path);
+      }
+      log('  🌳 ساخت درخت جدید...');
+      const newTree = await ghApi(token, 'POST', '/repos/' + owner + '/' + repo + '/git/trees', { base_tree: treeSha, tree: treeItems });
+      log('  📝 ساخت کامیت...');
+      const newCommit = await ghApi(token, 'POST', '/repos/' + owner + '/' + repo + '/git/commits', { message: '🚀 Initial bot deployment — SHΞN Bot Studio', tree: newTree.sha, parents: [commitSha] });
+      log('  🔄 به‌روزرسانی شاخه...');
+      await ghApi(token, 'PATCH', '/repos/' + owner + '/' + repo + '/git/refs/heads/' + branch, { sha: newCommit.sha });
+      log('  ✅ تمام فایل‌ها در یک کامیت ثبت شدند', 'success');
+      return branch;
+    }
+
+    async function getLatestWorkflowRun(token, owner, repo) {
+      const res = await ghApi(token, 'GET', '/repos/' + owner + '/' + repo + '/actions/runs?per_page=1');
+      return (res.workflow_runs && res.workflow_runs[0]) || null;
+    }
+
+    async function pollWorkflow(token, owner, repo) {
+      log('⏳ انتظار برای شروع ورک‌فلو...');
+      let run = null;
+      for (let i = 0; i < 12; i++) {
+        await sleep(5000);
+        run = await getLatestWorkflowRun(token, owner, repo);
+        if (run) break;
+        log('  ورک‌فلو هنوز ثبت نشده...');
+      }
+      if (!run) { throw new Error('ورک‌فلو پس از ۶۰ ثانیه شروع نشد.'); }
+      log('🔄 ورک‌فلو شروع شد', 'info');
+      log('  🔗 ' + run.html_url, 'info');
+      while (run.status !== 'completed') {
+        await sleep(5000);
+        run = await getLatestWorkflowRun(token, owner, repo);
+        if (run.status === 'in_progress') { log('  ⏳ در حال اجرا...'); }
+        else if (run.status === 'queued') { log('  📋 در صف...'); }
+      }
+      return run;
+    }
+
+    function generateBotScript(config) {
+      const botConfig = { botToken: config.tgToken, geminiKey: config.geminiKey, serperKey: config.serperKey, ownerUsername: config.ownerUsername, botDisplayName: config.botDisplayName, systemPrompt: config.systemPrompt, geminiModel: 'gemini-2.0-flash' };
+      const template = document.getElementById('template-bot').textContent;
+      return template.replace('__BOT_CONFIG__', JSON.stringify(botConfig, null, 2));
+    }
+
+    function generateWranglerToml(repoName) {
+      const template = document.getElementById('template-wrangler').textContent;
+      return template.replace(/__REPO_NAME__/g, repoName).trim() + '\n';
+    }
+
+    function generatePackageJson(repoName) {
+      const template = document.getElementById('template-package').textContent;
+      return template.replace(/__REPO_NAME__/g, repoName).trim() + '\n';
+    }
+
+    function generateDeployYml() {
+      return document.getElementById('template-deploy').textContent.trim() + '\n';
+    }
+
+    function generateFiles(config) {
+      return [
+        { path: 'src/index.js', content: generateBotScript(config) },
+        { path: 'wrangler.toml', content: generateWranglerToml(config.repoName) },
+        { path: 'package.json', content: generatePackageJson(config.repoName) },
+        { path: '.github/workflows/deploy.yml', content: generateDeployYml() }
+      ];
+    }
+
+    async function startDeployment() {
+      if (isDeploying) return;
+      isDeploying = true;
+      const deployBtn = document.getElementById('deploy-btn');
+      deployBtn.disabled = true;
+      deployBtn.innerHTML = '⏳ در حال اجرا...';
+      document.getElementById('console-logs').innerHTML = '';
+      document.getElementById('deploy-result').classList.add('hidden');
+      document.getElementById('result-links').innerHTML = '';
+      try {
+        const config = gatherConfig();
+        if (!validateConfig(config)) {
+          setStatus('خطا — فیلدهای خالی', 'error');
+          goToStep(1);
+          isDeploying = false;
+          deployBtn.disabled = false;
+          deployBtn.innerHTML = '🚀 شروع استقرار';
+          return;
+        }
+        if (currentStep !== 4) goToStep(4);
+        setStatus('در حال اجرا...', 'running');
+        log('🚀 شروع پایپ‌لاین استقرار', 'info');
+        log('');
+        log('🔍 دریافت اطلاعات کاربری گیت‌هاب...');
+        const user = await getGitHubUser(config.githubToken);
+        log('✅ کاربر: ' + user.login, 'success');
+        log('');
+        log('📦 ایجاد ریپازیتوری خصوصی...');
+        await createRepo(config.githubToken, config.repoName);
+        log('✅ ریپازیتوری: ' + user.login + '/' + config.repoName, 'success');
+        log('');
+        log('🔐 تنظیم سکرت‌های GitHub Actions...');
+        await setGitHubSecrets(config, user.login);
+        log('✅ تمام سکرت‌ها ثبت شدند', 'success');
+        log('');
+        log('📝 تولید فایل‌های پروژه...');
+        const files = generateFiles(config);
+        files.forEach(f => log('  📄 ' + f.path));
+        log('');
+        log('📤 کامیت فایل‌ها به ریپازیتوری...');
+        await commitAllFiles(config.githubToken, user.login, config.repoName, files);
+        log('✅ push انجام شد — ورک‌فلو به‌صورت خودکار trigger می‌شود', 'success');
+        log('');
+        log('⏳ انتظار برای اجرای GitHub Actions...');
+        const run = await pollWorkflow(config.githubToken, user.login, config.repoName);
+        log('');
+        if (run.conclusion === 'success') {
+          log('🎉 استقرار با موفقیت انجام شد!', 'success');
+          log('✅ ورکر روی Cloudflare Workers فعال است', 'success');
+          log('✅ وبهوک تلگرام تنظیم شد', 'success');
+          setStatus('استقرار موفق', 'success');
+          const resultDiv = document.getElementById('deploy-result');
+          const linksDiv = document.getElementById('result-links');
+          linksDiv.innerHTML =
+            '<a href="https://github.com/' + user.login + '/' + config.repoName + '" target="_blank" class="px-4 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-300 hover:text-amber-400 hover:border-amber-500/30 transition">📦 ریپازیتوری گیت‌هاب</a>' +
+            '<a href="' + run.html_url + '" target="_blank" class="px-4 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-300 hover:text-amber-400 hover:border-amber-500/30 transition">⚡ ورک‌فلو GitHub Actions</a>' +
+            '<a href="https://dash.cloudflare.com/" target="_blank" class="px-4 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-300 hover:text-amber-400 hover:border-amber-500/30 transition">☁️ داشبورد کلودفلر</a>';
+          resultDiv.classList.remove('hidden');
+        } else {
+          log('❌ استقرار ناموفق بود: ' + (run.conclusion || 'نامشخص'), 'error');
+          log('🔗 جزئیات: ' + run.html_url, 'error');
+          setStatus('استقرار ناموفق', 'error');
+        }
+      } catch (e) {
+        log('❌ خطا: ' + e.message, 'error');
+        setStatus('خطا', 'error');
+        if (e.data) { log('  جزئیات: ' + JSON.stringify(e.data).substring(0, 200), 'error'); }
+      } finally {
+        isDeploying = false;
+        deployBtn.disabled = false;
+        deployBtn.innerHTML = '🚀 شروع مجدد استقرار';
+      }
+    }
+
+    loadFormCache();
+    goToStep(1);
+  </script>
+</body>
+</html>
