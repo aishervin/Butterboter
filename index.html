@@ -121,7 +121,7 @@
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1.5">نام ریپازیتوری گیت‌هاب و ورکر</label>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">  نام ریپاز گیت‌هاب و ورکر 🚦شروع نام با حروف کوچک باشد</label>
               <input type="text" id="repo_name" value="my-ai-telegram-bot" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-slate-100 code-font">
             </div>
             <div>
@@ -619,7 +619,7 @@ jobs:
         await sleep(5000);
         run = await getLatestWorkflowRun(token, owner, repo);
         if (run.status === 'in_progress') { log('  ⏳ در حال اجرا...'); }
-        else if (run.status === 'queued') { log('  📋 در صف...'); }
+        else if (run.status === 'queued') { log('  📋 در صف پردازش...'); }
       }
       return run;
     }
